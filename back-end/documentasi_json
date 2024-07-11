@@ -1,0 +1,37 @@
+/** Untuk dapatkan formulir */
+
+{
+    "kode_rumahsakit": 123
+}
+
+
+
+{"kode_rumahsakit":"2","tanggal_transaksi":"2024-07-08","keterangan":"Sample transaction description","details":[null,null,null,null,{"subpelayanan_id":"4","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 5","kode_rumahsakit":"2"},null,null,null,{"subpelayanan_id":"8","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 9","kode_rumahsakit":"2"},{"subpelayanan_id":"9","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 10","kode_rumahsakit":"2"},{"subpelayanan_id":"10","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 11","kode_rumahsakit":"2"},{"subpelayanan_id":"11","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 12","kode_rumahsakit":"2"},{"subpelayanan_id":"12","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 13","kode_rumahsakit":"2"},{"subpelayanan_id":"13","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 14","kode_rumahsakit":"2"},{"subpelayanan_id":"14","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 15","kode_rumahsakit":"2"},{"subpelayanan_id":"15","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 16","kode_rumahsakit":"2"},{"subpelayanan_id":"16","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 17","kode_rumahsakit":"2"},{"subpelayanan_id":"17","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 18","kode_rumahsakit":"2"},{"subpelayanan_id":"18","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 19","kode_rumahsakit":"2"},{"subpelayanan_id":"19","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 20","kode_rumahsakit":"2"},{"subpelayanan_id":"20","tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 21","kode_rumahsakit":"2"},{"tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 22","kode_rumahsakit":"2"},{"tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 23","kode_rumahsakit":"2"},{"tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 24","kode_rumahsakit":"2"},{"tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 25","kode_rumahsakit":"2"},{"tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 26","kode_rumahsakit":"2"},{"tanggal_transaksi":"2024-07-08","jumlah":"1","keterangan":"Detail description 27","kode_rumahsakit":"2"}]}
+
+
+
+// yang bener 
+
+{
+    "kode_rumahsakit": 2,
+    "tanggal_transaksi": "2024-07-08",
+    "keterangan": "Sample transaction description",
+    "details": [
+        {
+            "subpelayanan_id": 4,
+            "pelayanan_id": 3,
+            "tanggal_transaksi": "2024-07-08",
+            "jumlah": 1500.00,
+            "keterangan": "-",
+            "kode_rumahsakit": 1
+        },
+        {
+            "subpelayanan_id": 9,
+            "pelayanan_id": 3,
+            "tanggal_transaksi": "2024-07-08",
+            "jumlah": 2000.00,
+            "keterangan": "",
+            "kode_rumahsakit": 2
+        }
+    ]
+}
