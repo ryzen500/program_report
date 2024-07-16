@@ -13,24 +13,19 @@ function ReportPelayanan({ groupedData }) {
 
   const handleExport = () => {
     const wb = XLSX.utils.book_new();
-    const wsData = [];
-
-    // Header row
-    wsData.push([
-      'No',
-      'Jenis Layanan',
-      'Parameter',
-      `Tahun ${yearPrevious}`,
-      `Rt2/Bln`,
-      ...[...Array(12).keys()].map((i) => `${i + 1}`),
-      'Jml/Rt',
-    ]);
-
-    let index = 1;
     Object.keys(groupedData).forEach((mainService) => {
-      // Add main service name row
-      wsData.push([mainService]);
+      const wsData = [];
+      wsData.push([
+        'No',
+        'Jenis Layanan',
+        'Parameter',
+        `Tahun ${yearPrevious}`,
+        `Rt2/Bln`,
+        ...[...Array(12).keys()].map((i) => `${i + 1}`),
+        'Jml/Rt',
+      ]);
 
+      let index = 1;
       Object.keys(groupedData[mainService]).forEach((subServiceKey, subIndex) => {
         const subService = groupedData[mainService][subServiceKey];
         wsData.push([
@@ -45,11 +40,11 @@ function ReportPelayanan({ groupedData }) {
           subService.jumlah.toFixed(2),
         ]);
       });
-      index++;
+
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(wb, ws, mainService);
     });
 
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
-    XLSX.utils.book_append_sheet(wb, ws, `Report Pelayanan ${year}`);
     XLSX.writeFile(wb, `report_pelayanan_${year}.xlsx`);
   };
 

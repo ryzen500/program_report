@@ -18,22 +18,25 @@ export default function TotalSpent(props) {
   const { ...rest } = props;
 
   const [chartData, setChartData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [overallPercentageChange, setOverallPercentageChange] = useState(null);
 
-    const token = localStorage.getItem('token');
-
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchChartData = async () => {
       try {
         const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL_BACKEND}/chart`,{
-                headers: {
-                'Authorization': `Bearer ${token}`,
+          `${process.env.REACT_APP_API_BASE_URL_BACKEND}/chart`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
             },
-        }
-      );
-        setChartData(response.data);
+          }
+        );
+        setCategories(response.data.categories);
+        setChartData(response.data.series);
+        setOverallPercentageChange(response.data.overall_percentage_change);
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch chart data:", error);
@@ -59,7 +62,6 @@ export default function TotalSpent(props) {
     { bg: "whiteAlpha.100" }
   );
 
-console.log("chartData" , chartData);
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -105,8 +107,8 @@ console.log("chartData" , chartData);
       type: "line",
     },
     xaxis: {
-      type: "numeric",
-      categories: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN"],
+      type: "category",
+      categories: categories,
       labels: {
         style: {
           colors: "#A3AED0",
@@ -146,78 +148,38 @@ console.log("chartData" , chartData);
       mb='0px'
       {...rest}>
       <Flex justify='space-between' ps='0px' pe='20px' pt='5px'>
-        <Flex align='center' w='100%'>
+        <Flex align='center' w='50%'>
           <Button
             bg={boxBg}
-            fontSize='sm'
-            fontWeight='500'
-            color={textColorSecondary}
-            borderRadius='7px'>
-            <Icon
-              as={MdOutlineCalendarToday}
-              color={textColorSecondary}
-              me='4px'
-            />
-            Perbandingan Pemeriksaan Antar Rumah Sakit Yayasan
-          </Button>
-          <Button
-            ms='auto'
-            align='center'
-            justifyContent='center'
-            bg={bgButton}
+            borderRadius='50%'
+            p='0px'
+            me='10px'
             _hover={bgHover}
-            _focus={bgFocus}
             _active={bgFocus}
-            w='37px'
-            h='37px'
-            lineHeight='100%'
-            borderRadius='10px'
-            {...rest}>
-            <Icon as={MdBarChart} color={iconColor} w='24px' h='24px' />
+            _focus={bgFocus}>
+            <Icon as={MdBarChart} color={iconColor} w='20px' h='20px' />
           </Button>
-        </Flex>
-      </Flex>
-      <Flex w='100%' flexDirection={{ base: "column", lg: "row" }}>
-        <Flex flexDirection='column' me='20px' mt='28px'>
-          <Text
-            color={textColor}
-            fontSize='34px'
-            textAlign='start'
-            fontWeight='700'
-            lineHeight='100%'>
-            $37.5K
-          </Text>
-          <Flex align='center' mb='20px'>
-            <Text
-              color='secondaryGray.600'
-              fontSize='sm'
-              fontWeight='500'
-              mt='4px'
-              me='12px'>
-              Total Spent
+          <Flex direction='column'>
+            <Text color={textColor} fontSize='md' fontWeight='700'>
+              Total Pemeriksaan
             </Text>
-            <Flex align='center'>
-              <Icon as={RiArrowUpSFill} color='green.500' me='2px' mt='2px' />
-              <Text color='green.500' fontSize='sm' fontWeight='700'>
-                +2.45%
-              </Text>
-            </Flex>
           </Flex>
+        </Flex>
+        <Flex align='center'>
 
-          <Flex align='center'>
-            <Icon as={IoCheckmarkCircle} color='green.500' me='4px' />
-            <Text color='green.500' fontSize='md' fontWeight='700'>
-              On track
-            </Text>
-          </Flex>
+          <Icon as={RiArrowUpSFill} color='green.500' me='4px' />
+          <Text color='green.500' fontSize='xs' fontWeight='700'>
+              {`Comparison: ${overallPercentageChange > 0 ? 'Increase' : 'Decrease'} of ${Math.abs(overallPercentageChange)}%`}
+          </Text>
         </Flex>
-        <Box minH='260px' minW='75%' mt='auto'>
-          <LineChart
-            chartData={chartData}
-            chartOptions={chartOptions}
-          />
-        </Box>
       </Flex>
+
+      <Box h='240px' mt='auto'>
+        <LineChart
+          chartData={chartData}
+          chartOptions={chartOptions}
+        />
+      </Box>
     </Card>
   );
 }

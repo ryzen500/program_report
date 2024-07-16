@@ -1,8 +1,8 @@
+/* eslint-disable */
 import {
   Flex,
-  Table,
   Progress,
-  Icon,
+  Table,
   Tbody,
   Td,
   Text,
@@ -11,6 +11,10 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
+// Custom components
+import Card from "components/card/Card";
+import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
+import Menu from "components/menu/MainMenu";
 import React, { useMemo } from "react";
 import {
   useGlobalFilter,
@@ -19,13 +23,7 @@ import {
   useTable,
 } from "react-table";
 
-// Custom components
-import Card from "components/card/Card";
-import Menu from "components/menu/MainMenu";
-
-// Assets
-import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
-export default function ColumnsTable(props) {
+export default function DevelopmentTable(props) {
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -49,9 +47,10 @@ export default function ColumnsTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 5;
+  initialState.pageSize = 11;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
+  const iconColor = useColorModeValue("secondaryGray.500", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
   return (
     <Card
@@ -59,13 +58,13 @@ export default function ColumnsTable(props) {
       w='100%'
       px='0px'
       overflowX={{ sm: "scroll", lg: "hidden" }}>
-      <Flex px='25px' justify='space-between' mb='10px' align='center'>
+      <Flex px='25px' justify='space-between' mb='20px' align='center'>
         <Text
           color={textColor}
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Log Login User
+          Development Table
         </Text>
         <Menu />
       </Flex>
@@ -104,35 +103,41 @@ export default function ColumnsTable(props) {
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "STATUS") {
+                  } else if (cell.column.Header === "TECH") {
                     data = (
                       <Flex align='center'>
-                        <Icon
-                          w='24px'
-                          h='24px'
-                          me='5px'
-                          color={
-                            cell.value === "Approved"
-                              ? "green.500"
-                              : cell.value === "Disable"
-                              ? "red.500"
-                              : cell.value === "Error"
-                              ? "orange.500"
-                              : null
+                        {cell.value.map((item, key) => {
+                          if (item === "apple") {
+                            return (
+                              <AppleLogo
+                                key={key}
+                                color={iconColor}
+                                me='16px'
+                                h='18px'
+                                w='15px'
+                              />
+                            );
+                          } else if (item === "android") {
+                            return (
+                              <AndroidLogo
+                                key={key}
+                                color={iconColor}
+                                me='16px'
+                                h='18px'
+                                w='16px'
+                              />
+                            );
+                          } else if (item === "windows") {
+                            return (
+                              <WindowsLogo
+                                key={key}
+                                color={iconColor}
+                                h='18px'
+                                w='19px'
+                              />
+                            );
                           }
-                          as={
-                            cell.value === "Approved"
-                              ? MdCheckCircle
-                              : cell.value === "Disable"
-                              ? MdCancel
-                              : cell.value === "Error"
-                              ? MdOutlineError
-                              : null
-                          }
-                        />
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
-                          {cell.value}
-                        </Text>
+                        })}
                       </Flex>
                     );
                   } else if (cell.column.Header === "DATE") {
@@ -144,11 +149,18 @@ export default function ColumnsTable(props) {
                   } else if (cell.column.Header === "PROGRESS") {
                     data = (
                       <Flex align='center'>
+                        <Text
+                          me='10px'
+                          color={textColor}
+                          fontSize='sm'
+                          fontWeight='700'>
+                          {cell.value}%
+                        </Text>
                         <Progress
                           variant='table'
                           colorScheme='brandScheme'
                           h='8px'
-                          w='108px'
+                          w='63px'
                           value={cell.value}
                         />
                       </Flex>
@@ -159,8 +171,6 @@ export default function ColumnsTable(props) {
                       {...cell.getCellProps()}
                       key={index}
                       fontSize={{ sm: "14px" }}
-                      maxH='30px !important'
-                      py='8px'
                       minW={{ sm: "150px", md: "200px", lg: "auto" }}
                       borderColor='transparent'>
                       {data}

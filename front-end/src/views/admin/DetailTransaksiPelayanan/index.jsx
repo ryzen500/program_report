@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, SimpleGrid } from "@chakra-ui/react";
-
+import { useParams } from "react-router-dom";
 import ReportPelayanan from 'report/ReportPelayanan.js';
-import ColumnsTableTransaksiPelayanan from "views/admin/dataTables/components/ColumnsTableTransaksiPelayanan";
-import {
- columnsDataTransaksiPelayananPoli
-} from "views/admin/dataTables/variables/columnsData";
+// import ColumnsTableTransaksiPelayanan from "views/admin/dataTables/components/ColumnsTableTransaksiPelayanan";
+// import {
+//  columnsDataTransaksiPelayananPoli
+// } from "views/admin/dataTables/variables/columnsData";
 
 export default function Settings() {
   const [groupedData, setGroupedData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
-
+  const { id } = useParams();
   useEffect(() => {
+  let newDate  = new Date();
+  let year = newDate.getFullYear();
+  let yearPrevious  = newDate.getFullYear() - 1;
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL_BACKEND}/report_data/2023`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL_BACKEND}/report_data/${yearPrevious}/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,10 +72,9 @@ export default function Settings() {
 
   return (
  <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-  <ColumnsTableTransaksiPelayanan         
-    columnsData={columnsDataTransaksiPelayananPoli}
+ 
+       <ReportPelayanan groupedData={groupedData} />
 
-/>
     {/*  <SimpleGrid>
       
         <ColumnsTablePelayanan

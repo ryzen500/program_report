@@ -120,6 +120,96 @@ export const barChartDataConsumption = [
   },
 ];
 
+// export const barChartOptionsConsumption = {
+//   chart: {
+//     stacked: true,
+//     toolbar: {
+//       show: false,
+//     },
+//   },
+//   tooltip: {
+//     style: {
+//       fontSize: "12px",
+//       fontFamily: undefined,
+//     },
+//     onDatasetHover: {
+//       style: {
+//         fontSize: "12px",
+//         fontFamily: undefined,
+//       },
+//     },
+//     theme: "dark",
+//   },
+//   xaxis: {
+//     categories: ["17", "18", "19", "20", "21", "22", "23", "24", "25"],
+//     show: false,
+//     labels: {
+//       show: true,
+//       style: {
+//         colors: "#A3AED0",
+//         fontSize: "14px",
+//         fontWeight: "500",
+//       },
+//     },
+//     axisBorder: {
+//       show: false,
+//     },
+//     axisTicks: {
+//       show: false,
+//     },
+//   },
+//   yaxis: {
+//     show: false,
+//     color: "black",
+//     labels: {
+//       show: false,
+//       style: {
+//         colors: "#A3AED0",
+//         fontSize: "14px",
+//         fontWeight: "500",
+//       },
+//     },
+//   },
+
+//   grid: {
+//     borderColor: "rgba(163, 174, 208, 0.3)",
+//     show: true,
+//     yaxis: {
+//       lines: {
+//         show: false,
+//         opacity: 0.5,
+//       },
+//     },
+//     row: {
+//       opacity: 0.5,
+//     },
+//     xaxis: {
+//       lines: {
+//         show: false,
+//       },
+//     },
+//   },
+//   fill: {
+//     type: "solid",
+//     colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
+//   },
+//   legend: {
+//     show: false,
+//   },
+//   colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
+//   dataLabels: {
+//     enabled: false,
+//   },
+//   plotOptions: {
+//     bar: {
+//       borderRadius: 10,
+//       columnWidth: "20px",
+//     },
+//   },
+// };
+
+// File: charts.js
+
 export const barChartOptionsConsumption = {
   chart: {
     stacked: true,
@@ -141,8 +231,8 @@ export const barChartOptionsConsumption = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["17", "18", "19", "20", "21", "22", "23", "24", "25"],
-    show: false,
+    categories: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+    show: true,
     labels: {
       show: true,
       style: {
@@ -159,10 +249,10 @@ export const barChartOptionsConsumption = {
     },
   },
   yaxis: {
-    show: false,
+    show: true,
     color: "black",
     labels: {
-      show: false,
+      show: true,
       style: {
         colors: "#A3AED0",
         fontSize: "14px",
@@ -170,13 +260,12 @@ export const barChartOptionsConsumption = {
       },
     },
   },
-
   grid: {
     borderColor: "rgba(163, 174, 208, 0.3)",
     show: true,
     yaxis: {
       lines: {
-        show: false,
+        show: true,
         opacity: 0.5,
       },
     },
@@ -185,7 +274,7 @@ export const barChartOptionsConsumption = {
     },
     xaxis: {
       lines: {
-        show: false,
+        show: true,
       },
     },
   },
@@ -194,7 +283,7 @@ export const barChartOptionsConsumption = {
     colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
   },
   legend: {
-    show: false,
+    show: true,
   },
   colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
   dataLabels: {

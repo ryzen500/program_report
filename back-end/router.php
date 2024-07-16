@@ -32,6 +32,11 @@ function routeRequest() {
 // error_log(print_r($headers, true));  // Log all headers for debugging
 // die;
           // echo "$headers";
+       
+           if ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'data_rumah_sakit') {
+            readRumahSakit();
+            } 
+
         if (!isset($headers['Authorization'])) {
             sendResponse(401, array('error' => 'No token provided'));
             return;
@@ -133,8 +138,20 @@ function routeRequest() {
          elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'getFormulir') {
             getNoFormulir();
 
-        } elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'transaksi_pelayanan') {
+        } 
+
+         elseif ($request_method === 'PUT' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'transaksi_pelayanan' && !empty($uri_parts[6])) {
+            $transaksi_id = $uri_parts[6];
+            editTransaksi($transaksi_id);
+
+        }
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'transaksi_pelayanan') {
             addTransaksi();
+
+        }
+
+         elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'transaksi_pelayanan') {
+            readTransaksiPelayanan();
 
         }
          elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'totalpoliKlinik') {
@@ -154,14 +171,43 @@ function routeRequest() {
             addTotalPoliFisio();
 
         }
+        elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'weekly_chart') {
+            // addTransaksi();
+            getWeeklyChartData();
+        }
+
+        elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'pie_chart') {
+            // addTransaksi();
+            getPieChartData();
+        }
 
            elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'chart') {
             // addTransaksi();
             getChartData();
-        }  elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'report_data'  && !empty($uri_parts[6])) {
+        }
+            elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'report_data'  && !empty($uri_parts[6])  && !empty($uri_parts[7])) {
+            $year = $uri_parts[6];
+            $transaksiId=  $uri_parts[7];
+            // echo "Ok";
+        getReportDataByTransaksiId($year,$transaksiId);
+        }
+
+            elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'editPoli_transaksi'  && !empty($uri_parts[6])  && !empty($uri_parts[7])) {
+            $year = $uri_parts[6];
+            $transaksiId=  $uri_parts[7];
+            // echo "Ok";
+        getSubTransaksiPelayananDetailPerPoli($year,$transaksiId);
+        }
+          elseif ($request_method === 'PUT' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'transaksi_pelayananHapus'  && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            softDeleteHapusTransaksiPelayanan($id);
+        }
+          elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'report_data'  && !empty($uri_parts[6])) {
             $year = $uri_parts[6];
             getReportData($year);
         }
+
+        // softDeleteHapusTransaksiPelayanan
 
 
 

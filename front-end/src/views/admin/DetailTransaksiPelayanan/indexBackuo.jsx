@@ -3,10 +3,8 @@ import axios from "axios";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 
 import ReportPelayanan from 'report/ReportPelayanan.js';
-import ColumnsTableTransaksiPelayanan from "views/admin/dataTables/components/ColumnsTableTransaksiPelayanan";
-import {
- columnsDataTransaksiPelayananPoli
-} from "views/admin/dataTables/variables/columnsData";
+import ColumnsTable from "views/admin/dataTables/components/ColumnsTable";
+
 
 export default function Settings() {
   const [groupedData, setGroupedData] = useState({});
@@ -68,10 +66,7 @@ export default function Settings() {
 
   return (
  <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-  <ColumnsTableTransaksiPelayanan         
-    columnsData={columnsDataTransaksiPelayananPoli}
-
-/>
+  <ColumnsTable/>
     {/*  <SimpleGrid>
       
         <ColumnsTablePelayanan

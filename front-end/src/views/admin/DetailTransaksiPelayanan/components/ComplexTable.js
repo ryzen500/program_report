@@ -59,13 +59,13 @@ export default function ColumnsTable(props) {
       w='100%'
       px='0px'
       overflowX={{ sm: "scroll", lg: "hidden" }}>
-      <Flex px='25px' justify='space-between' mb='10px' align='center'>
+      <Flex px='25px' justify='space-between' mb='20px' align='center'>
         <Text
           color={textColor}
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Log Login User
+          Complex Table
         </Text>
         <Menu />
       </Flex>
@@ -159,8 +159,6 @@ export default function ColumnsTable(props) {
                       {...cell.getCellProps()}
                       key={index}
                       fontSize={{ sm: "14px" }}
-                      maxH='30px !important'
-                      py='8px'
                       minW={{ sm: "150px", md: "200px", lg: "auto" }}
                       borderColor='transparent'>
                       {data}

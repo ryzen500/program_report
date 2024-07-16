@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import {
@@ -23,6 +24,7 @@ import {
   FaAngleLeft,
   FaAngleRight,
   FaAngleDoubleRight,
+  FaEye,
 } from "react-icons/fa";
 import {
   useGlobalFilter,
@@ -30,28 +32,29 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import AddDataFormMasterPelayanan from "components/form/AddDataFormMasterPelayanan";
-import useAccess from "../../../../hooks/useAccess"; // Sesuaikan dengan path hooks/useAccess.js
+import AddDataForm from "components/form/AddDataForm";
+import useAccess from '../../../../hooks/useAccess.js';
 
-export default function ColumnsTableMasterPelayanan(props) {
+export default function ColumnsTableTransaksiPelayanan(props) {
   const { columnsData } = props;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isFormVisible, setFormVisible] = useState(false);
   const [editData, setEditData] = useState(null);
-
-  const { access, validateAccess } = useAccess(); // Ambil access dan validateAccess dari useAccess hook
+  
+  const { access, setAccess, validateAccess } = useAccess();
   const token = localStorage.getItem('token');
+  const history = useHistory();
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL_BACKEND}/transaksi_pelayanan`,{
-              headers: {
-              'Authorization': `Bearer ${token}`,
+        `${process.env.REACT_APP_API_BASE_URL_BACKEND}/transaksi_pelayanan`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
           },
-      }
+        }
       );
       setData(response.data);
     } catch (error) {
@@ -99,28 +102,17 @@ export default function ColumnsTableMasterPelayanan(props) {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
+  console.log("access", access);
+
   const handleEditClick = async (row) => {
-    console.log("Edit clicked for row:", row.pelayanan_id);
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL_BACKEND}/master_pelayanan/${row.pelayanan_id}`,{
-              headers: {
-              'Authorization': `Bearer ${token}`,
-          },
-      }
-      );
-      const dataToEdit = response.data;
-      setEditData(dataToEdit);
-      setFormVisible(true);
-    } catch (error) {
-      console.error("Failed to fetch data for edit:", error);
-    }
+    console.log("View clicked for row:", row);
+    history.push(`/admin/transaksiEdit-pelayanan/${row.transaksi_id}`);
   };
 
   const handleDeleteClick = async (row) => {
     console.log("Delete clicked for row:", row);
     Swal.fire({
-       title: "Apakah Anda Yakin?",
+      title: "Apakah Anda Yakin?",
       text: "Anda Tidak Akan Dapat Mengembalikan Data ini!",
       icon: "warning",
       showCancelButton: true,
@@ -130,13 +122,13 @@ export default function ColumnsTableMasterPelayanan(props) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.delete(
-        `${process.env.REACT_APP_API_BASE_URL_BACKEND}/master_pelayanan/${row.pelayanan_id}`,{
+          const response = await axios.put(
+            `${process.env.REACT_APP_API_BASE_URL_BACKEND}/transaksi_pelayananHapus/${row.transaksi_id}`, {},{
               headers: {
-              'Authorization': `Bearer ${token}`,
-          },
-      }
-      );
+                'Authorization': `Bearer ${token}`,
+              },
+            }
+          );
           Swal.fire("Deleted!", "Data kamu berhasil Dihapus .", "success");
           fetchData();
         } catch (error) {
@@ -144,6 +136,11 @@ export default function ColumnsTableMasterPelayanan(props) {
         }
       }
     });
+  };
+
+  const handleViewClick = (row) => {
+    console.log("View clicked for row:", row);
+    history.push(`/admin/detail-transaksi-pelayanan/${row.transaksi_id}`);
   };
 
   const handleAddClick = () => {
@@ -155,7 +152,7 @@ export default function ColumnsTableMasterPelayanan(props) {
     console.log("Form submitted with data:", newData);
     try {
       let response;
-        console.log("Edit ",newData);
+      console.log("Edit ", newData);
 
       // if (editData) {
       //   response = await axios.put(`http://localhost/program_report/back-end/index.php/api/hak_akses/${editData[0].hak_akses_id}`, newData);
@@ -172,18 +169,8 @@ export default function ColumnsTableMasterPelayanan(props) {
 
   return (
     <>
-      <Flex justify="flex-start" mb="16px">
-        {validateAccess({ create: true }) && ( // Hanya tampilkan tombol tambah jika punya akses create
-          <IconButton
-            colorScheme="green"
-            aria-label="Add"
-            icon={<FaPlus />}
-            onClick={handleAddClick}
-          />
-        )}
-      </Flex>
       {isFormVisible ? (
-        <AddDataFormMasterPelayanan onSubmit={handleFormSubmit} initialData={editData} />
+        <AddDataForm onSubmit={handleFormSubmit} initialData={editData} />
       ) : (
         <>
           <Table
@@ -214,7 +201,7 @@ export default function ColumnsTableMasterPelayanan(props) {
                       </Flex>
                     </Th>
                   ))}
-                  <Th>Action</Th>
+                  <Th textAlign="center">Action</Th>
                 </Tr>
               ))}
             </Thead>
@@ -227,11 +214,11 @@ export default function ColumnsTableMasterPelayanan(props) {
                     {row.cells.map((cell, index) => {
                       let data = cell.render("Cell");
 
-                      if (cell.column.Header === "Nama Hak Akses") {
+                      if (cell.column.Header === "No Formulir") {
                         data = (
                           <Flex align="center">
                             <Text color={textColor} fontSize="sm" fontWeight="700">
-                              {cell.value}
+                              <a href={`#/admin/detail-transaksi-pelayanan/${row.original.transaksi_id}`}>{cell.value}</a>
                             </Text>
                           </Flex>
                         );
@@ -244,7 +231,7 @@ export default function ColumnsTableMasterPelayanan(props) {
                               fontSize="sm"
                               fontWeight="700"
                             >
-                              {cell.value}
+                              <a href={`/detail/${row.original.transaksi_id}`}>{cell.value}</a>
                             </Text>
                           </Flex>
                         );
@@ -262,23 +249,28 @@ export default function ColumnsTableMasterPelayanan(props) {
                       );
                     })}
                     <Td>
-                        <IconButton
-                          colorScheme="blue"
-                          aria-label="Edit"
-                          icon={<FaEdit />}
-                          mr={2}
-                          onClick={() => handleEditClick(row.original)}
-                         isDisabled={!access.update} // Disable delete button if delete access is false
-
-                        />
-                        <IconButton
-                          colorScheme="red"
-                          aria-label="Delete"
-                          icon={<FaTrash />}
-                          onClick={() => handleDeleteClick(row.original)}
-                         isDisabled={!access.delete} // Disable delete button if delete access is false
-
-                        />
+                      <IconButton
+                        colorScheme="blue"
+                        aria-label="Edit"
+                        icon={<FaEdit />}
+                        mr={2}
+                        onClick={() => handleEditClick(row.original)}
+                        isDisabled={!access.update}
+                      />
+                      <IconButton
+                        colorScheme="red"
+                        aria-label="Delete"
+                        icon={<FaTrash />}
+                        mr={2}
+                        onClick={() => handleDeleteClick(row.original)}
+                        isDisabled={!access.delete}
+                      />
+                      <IconButton
+                        colorScheme="teal"
+                        aria-label="View"
+                        icon={<FaEye />}
+                        onClick={() => handleViewClick(row.original)}
+                      />
                     </Td>
                   </Tr>
                 );
