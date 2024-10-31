@@ -1,4 +1,10 @@
 <?php
+
+require_once 'Transaksi/TransaksiPelayananSDMController.php';
+require_once 'config.php'; // Assuming db_connection.php contains the DB connection setup
+
+
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: *");
@@ -14,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
 function routeRequest() {
     $request_uri = $_SERVER['REQUEST_URI'];
     $request_method = $_SERVER['REQUEST_METHOD'];
-    
+    global $conn;
+
     // Split the URI into components
     $uri_parts = explode('/', $request_uri);
     
@@ -208,8 +215,114 @@ function routeRequest() {
         }
 
         // softDeleteHapusTransaksiPelayanan
+        elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'master_kualifikasi' &&  !empty($uri_parts[6]) ) {
+            $id = $uri_parts[6];
+            getKualifikasiDetail($id);
+        }
+         elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'master_kualifikasi') {
+            getAllKualifikasi();
+        } 
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'master_kualifikasi') {
+            // $input = json_decode(file_get_contents('php://input'), true);
+            addKualifikasi();
+            // echo "1";
+        } elseif ($request_method === 'PUT' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'master_kualifikasi') {
+            $id = $uri_parts[6];
+            // $input = json_decode(file_get_contents('php://input'), true);
+            updateKualifikasi($id);
+        } elseif ($request_method === 'DELETE' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'master_kualifikasi'  && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            deleteKualifikasi($id);
+
+        }
 
 
+         elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'subMaster_Kualifikasi' &&  !empty($uri_parts[6]) ) {
+            $id = $uri_parts[6];
+            // echo "$id";
+            getSubKualifikasiDetailPerPoli($id);
+        }
+
+          elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'subMaster_Kualifikasi' &&  !empty($uri_parts[6]) ) {
+            $id = $uri_parts[6];
+            getSubKualifikasiDetail($id);
+        }
+         elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'subMaster_Kualifikasi') {
+            getAllSubKualifikasi();
+        } 
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'subMaster_Kualifikasi') {
+            // $input = json_decode(file_get_contents('php://input'), true);
+            addSubKualifikasi();
+            // echo "1";
+        } elseif ($request_method === 'PUT' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'subMaster_Kualifikasi') {
+            $id = $uri_parts[6];
+            // $input = json_decode(file_get_contents('php://input'), true);
+            updateSubKualifikasi($id);
+        } elseif ($request_method === 'DELETE' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'subMaster_Kualifikasi'  && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            deleteSubKualifikasi($id);
+
+        }
+
+            elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'detail_data' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiPelayananSDM($conn);
+            $transaksiController->readTransaksiPelayananSDMDetail($id);
+
+        }
+
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'noformulirsdm') {
+                    $input = json_decode(file_get_contents('php://input'), true);
+                    $kode_rumahsakit = $input['kode_rumahsakit'];
+
+                if ($kode_rumahsakit) {
+                    $transaksiController = new TransaksiPelayananSDM($conn);
+                    $transaksiController->getNoFormulirSDM($kode_rumahsakit);  // Panggil fungsi yang sesuai
+                } else {
+                    echo "Kode Rumah Sakit tidak ada.";
+                }
+        }
+
+        elseif($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'laporan_sdm'){
+            $transaksiController = new TransaksiPelayananSDM($conn);
+            $transaksiController->readTransaksiPelayananSDM();
+        }
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'create_laporan_sdm') {
+                    $input = json_decode(file_get_contents('php://input'), true);
+                    // $kode_rumahsakit = $input['kode_rumahsakit'];
+
+                if ($input) {
+                    $transaksiController = new TransaksiPelayananSDM($conn);
+                    $transaksiController->createLaporanSDM($input);  // Panggil fungsi yang sesuai
+                } else {
+                    echo "Kode Rumah Sakit tidak ada.";
+                }
+        }
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'update_data_sdm' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiPelayananSDM($conn);
+            $transaksiController->updateSDMLaporanAndDetail($id,$input);
+
+        }
+
+
+          elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'delete_data_sdm' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiPelayananSDM($conn);
+            $transaksiController->softDeleteTransaksi($id);
+
+        }
 
 
 

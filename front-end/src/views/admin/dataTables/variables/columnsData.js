@@ -128,6 +128,20 @@ export const columnsDataSubMasterPelayanan = [
 ];
 
 
+export const columnsDataSubMasterKualifikasi = [
+
+{
+    Header: "Master Kualifikasi",
+    accessor: "nama_kualifikasi",
+  },
+  {
+    Header: "Nama Master Sub Kualifikasi",
+    accessor: "nama_subkualifikasi",
+  },
+
+];
+
+
 export const columnsDataTransaksiPelayanan = [
 
 {
@@ -160,6 +174,18 @@ export const columnsDataMasterPelayanan = [
   }
 
 ];
+
+
+
+export const columnsDataMasterKualifikasi = [
+
+{
+    Header: "Nama Kualifikasi",
+    accessor: "nama_kualifikasi",
+  }
+
+];
+
 
 
 

@@ -4,18 +4,18 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Box, Flex, Circle, Button } from '@chakra-ui/react';
 import Swal from 'sweetalert2';
-import Step1 from './Step1';
-import Step2 from './Step2';
-import Step3 from './Step3';
-import Step4 from './Step4';
-import Step5 from './Step5';
-import Step6 from './Step6';
-import Step7 from './Step7';
-import Step8 from './Step8';
-import Step9 from './Step9';
-import Step10 from './Step10';
-import Step11 from './Step11';
-import Step12 from './Step12';
+import Step1 from './TransaksiPelayanan/Step1';
+import Step2 from './TransaksiPelayanan/Step2';
+import Step3 from './TransaksiPelayanan/Step3';
+import Step4 from './TransaksiPelayanan/Step4';
+import Step5 from './TransaksiPelayanan/Step5';
+import Step6 from './TransaksiPelayanan/Step6';
+import Step7 from './TransaksiPelayanan/Step7';
+import Step8 from './TransaksiPelayanan/Step8';
+import Step9 from './TransaksiPelayanan/Step9';
+import Step10 from './TransaksiPelayanan/Step10';
+import Step11 from './TransaksiPelayanan/Step11';
+import Step12 from './TransaksiPelayanan/Step12';
 
 const WizardForm = () => {
   const methods = useForm();
@@ -61,7 +61,7 @@ console.log("Form Data ", formData);
       // transaksi_id: id, // Add transactionId to the request body
       kode_rumahsakit: formData.rumahSakit,
       tanggal_transaksi: formData.tanggal,
-      keterangan: formData.keterangan || 'Sample transaction description',
+      keterangan: formData.keterangan || '-',
       details: formData.subPelayanan.map((sub, index) => ({
         subpelayanan_id: sub.subpelayanan_id,
         pelayanan_id: sub.pelayanan_id,

@@ -1,0 +1,12 @@
+{
+    "name": "tsany/back-end",
+    "authors": [
+        {
+            "name": "ryzen500",
+            "email": "ahmadtsani145@gmail.com"
+        }
+    ],
+    "require": {
+        "tsany/pagination-library": "^1.0"
+    }
+}

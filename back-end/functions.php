@@ -1,7 +1,5 @@
 <?php
 
-
-
 require_once 'config.php';
 // Include global functions
 require_once 'global_functions.php';
@@ -22,7 +20,12 @@ require_once 'MasterPelayanan/MasterPelayananController.php';
 
 require_once 'SubMasterPelayanan/SubMasterPelayananController.php';
 
-
 require_once 'Transaksi/TransaksiPelayananController.php';
+
+// require_once 'Transaksi/TransaksiPelayananSDMController.php';
+
+require_once 'MasterKualifikasi/MasterKualifikasiController.php';
+
+require_once 'SubMasterKualifikasi/SubMasterKualifikasiController.php';
 
 ?>

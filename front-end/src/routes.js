@@ -16,9 +16,14 @@ import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
 import RumahSakitTables from "views/admin/rumahSakits";
 import MasterPelayanans from "views/admin/masterPelayanans";
+import MasterKualifikasi from "views/admin/masterKualifikasi";
 import SubMasterPelayanans from "views/admin/subMasterPelayanans";
+import SubMasterKualifikasi from "views/admin/subMasterKualifikasi";
+
 import ReportPelayanan from "views/admin/reportPelayanan";
 import TransaksiPelayanans from "views/admin/transaksiPelayanans";
+import TransaksiPelayananSDM from "views/admin/transaksiPelayananSDM";
+
 import DetailTransaksiPelayanan from "views/admin/DetailTransaksiPelayanan";
 
 
@@ -59,7 +64,7 @@ const routes = [
     layout: "/admin",
     path: "/master-hak-akses",
       icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    categories:"master",
+    categories:"masterIT",
 
     component: DataTables,
   },
@@ -69,7 +74,7 @@ const routes = [
     layout: "/admin",
     path: "/master-rumah-sakit",
       icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    categories:"master",
+    categories:"masterIT",
 
     component: RumahSakitTables,
   },
@@ -79,12 +84,34 @@ const routes = [
     name: "Master Pelayanan",
     layout: "/admin",
     path: "/master-pelayanan",
-    categories:"master",
+    categories:"masterPelayanan",
 
       icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     component: MasterPelayanans,
   },
 
+
+
+     {
+    name: "Master Kualifikasi",
+    layout: "/admin",
+    path: "/master-kualifikasi",
+    categories:"masterSDM",
+
+      icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+    component: MasterKualifikasi,
+  },
+
+
+   {
+    name: " Master SubKualifikasi",
+    layout: "/admin",
+    path: "/master-subkualifikasi",
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+    component: SubMasterKualifikasi,
+    categories:"masterSDM",
+
+  },
 
      {
     name: " Master SubPelayanan",
@@ -92,7 +119,7 @@ const routes = [
     path: "/master-subpelayanan",
       icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     component: SubMasterPelayanans,
-    categories:"master",
+    categories:"masterPelayanan",
 
   },
 
@@ -113,6 +140,15 @@ const routes = [
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     categories: "transaksi",
     component: TransaksiPelayanans,
+  },
+
+  {
+    name: "Transaksi SDM",
+    layout: "/admin",
+    path: "/transaksi-sdm", // Make id optional by adding a question mark
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+    categories: "transaksi",
+    component: TransaksiPelayananSDM,
   },
 
   {

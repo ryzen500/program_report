@@ -1,5 +1,8 @@
 <?php  
 
+require 'vendor/autoload.php';
+use PaginationLibrary\Pagination;
+
 
 // Function to handle Rumah Sakit CRUD operations
 function createRumahSakit($data) {
@@ -35,9 +38,22 @@ function readRumahSakitDetail($id) {
 }
 
 
-function readRumahSakit() {
+function readRumahSakit($page = 2, $itemsPerPage = 1) {
     global $conn;
-    $sql = "SELECT * FROM rumah_sakit";
+
+    // Hitung total item dari tabel rumah_sakit
+    $countSql = "SELECT COUNT(*) AS total FROM rumah_sakit";
+    $countResult = $conn->query($countSql);
+    $totalItems = $countResult->fetch_assoc()['total'];
+
+    // Inisialisasi pagination
+    $pagination = new Pagination($totalItems, $itemsPerPage, $page);
+
+    // Ambil data dengan offset dan limit sesuai halaman
+    $offset = $pagination->getOffset();
+    $limit = $pagination->getLimit();
+
+    $sql = "SELECT * FROM rumah_sakit LIMIT $limit OFFSET $offset";
     $result = $conn->query($sql);
 
     $rumah_sakit = array();
@@ -45,9 +61,14 @@ function readRumahSakit() {
         $rumah_sakit[] = $row;
     }
 
-    sendResponse(200, $rumah_sakit);
-}
+    // Response dengan data dan informasi pagination
+    $response = [
+        'pagination' => $pagination->getPaginationInfo(),
+        'data' => $rumah_sakit,
+    ];
 
+    sendResponse(200, $response);
+}
 
 
 function updateRumahSakit($kode_rumahsakit, $data) {

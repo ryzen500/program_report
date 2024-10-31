@@ -39,6 +39,7 @@ export default function ColumnsTableMasterPelayanan(props) {
   const [loading, setLoading] = useState(false);
   const [isFormVisible, setFormVisible] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [error, setError] = useState(null); // New state for error handling
 
   const { access, validateAccess } = useAccess(); // Ambil access dan validateAccess dari useAccess hook
   const token = localStorage.getItem('token');
@@ -54,8 +55,10 @@ export default function ColumnsTableMasterPelayanan(props) {
       }
       );
       setData(response.data);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error("Failed to fetch data:", error);
+      setError("error"); // Set error state
     } finally {
       setLoading(false);
     }
@@ -186,161 +189,172 @@ export default function ColumnsTableMasterPelayanan(props) {
         <AddDataFormMasterPelayanan onSubmit={handleFormSubmit} initialData={editData} />
       ) : (
         <>
-          <Table
-            {...getTableProps()}
-            variant="simple"
-            backgroundColor="white"
-            color="gray.500"
-            mb="24px"
-          >
-            <Thead>
-              {headerGroups.map((headerGroup, index) => (
-                <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                  <Th>No.</Th>
-                  {headerGroup.headers.map((column, index) => (
-                    <Th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      pe="10px"
-                      key={index}
-                      borderColor={borderColor}
-                    >
-                      <Flex
-                        justify="space-between"
-                        align="center"
-                        fontSize={{ sm: "10px", lg: "12px" }}
-                        color="gray.400"
-                      >
-                        {column.render("Header")}
-                      </Flex>
-                    </Th>
-                  ))}
-                  <Th>Action</Th>
-                </Tr>
-              ))}
-            </Thead>
-            <Tbody {...getTableBodyProps()}>
-              {page.map((row, index) => {
-                prepareRow(row);
-                return (
-                  <Tr {...row.getRowProps()} key={index}>
-                    <Td>{pageIndex * pageSize + index + 1}</Td>
-                    {row.cells.map((cell, index) => {
-                      let data = cell.render("Cell");
-
-                      if (cell.column.Header === "Nama Hak Akses") {
-                        data = (
-                          <Flex align="center">
-                            <Text color={textColor} fontSize="sm" fontWeight="700">
-                              {cell.value}
-                            </Text>
-                          </Flex>
-                        );
-                      } else if (cell.column.Header === "Nama Lain Hak Akses") {
-                        data = (
-                          <Flex align="center">
-                            <Text
-                              me="10px"
-                              color={textColor}
-                              fontSize="sm"
-                              fontWeight="700"
-                            >
-                              {cell.value}
-                            </Text>
-                          </Flex>
-                        );
-                      }
-                      return (
-                        <Td
-                          {...cell.getCellProps()}
+          {data.length == 0 ? ( // Conditionally render error message
+            <Text color="red.500" fontSize="xl" textAlign="center" my={4}>
+              No Data Available
+            </Text>
+          ) : (
+            <>
+              <Table
+                {...getTableProps()}
+                variant="simple"
+                backgroundColor="white"
+                color="gray.500"
+                mb="24px"
+              >
+                <Thead>
+                  {headerGroups.map((headerGroup, index) => (
+                    <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                      <Th>No.</Th>
+                      {headerGroup.headers.map((column, index) => (
+                        <Th
+                          {...column.getHeaderProps(column.getSortByToggleProps())}
+                          pe="10px"
                           key={index}
-                          fontSize={{ sm: "14px" }}
-                          minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                          borderColor="transparent"
+                          borderColor={borderColor}
                         >
-                          {data}
+                          <Flex
+                            justify="space-between"
+                            align="center"
+                            fontSize={{ sm: "10px", lg: "12px" }}
+                            color="gray.400"
+                          >
+                            {column.render("Header")}
+                          </Flex>
+                        </Th>
+                      ))}
+                      <Th>Action</Th>
+                    </Tr>
+                  ))}
+                </Thead>
+                <Tbody {...getTableBodyProps()}>
+                 <Tr>
+                  <Td colSpan={columns.length + 2} textAlign="center">
+                    No Data Available
+                  </Td>
+                </Tr>
+                {page.length === 0 ? (
+                ): (
+
+
+                )}
+                  {page.map((row, index) => {
+                    prepareRow(row);
+                    return (
+                      <Tr {...row.getRowProps()} key={index}>
+                        <Td>{pageIndex * pageSize + index + 1}</Td>
+                        {row.cells.map((cell, index) => {
+                          let data = cell.render("Cell");
+
+                          if (cell.column.Header === "Nama Hak Akses") {
+                            data = (
+                              <Flex align="center">
+                                <Text color={textColor} fontSize="sm" fontWeight="700">
+                                  {cell.value}
+                                </Text>
+                              </Flex>
+                            );
+                          } else if (cell.column.Header === "Nama Lain Hak Akses") {
+                            data = (
+                              <Flex align="center">
+                                <Text
+                                  me="10px"
+                                  color={textColor}
+                                  fontSize="sm"
+                                  fontWeight="700"
+                                >
+                                  {cell.value}
+                                </Text>
+                              </Flex>
+                            );
+                          }
+                          return (
+                            <Td
+                              {...cell.getCellProps()}
+                              key={index}
+                              fontSize={{ sm: "14px" }}
+                              minW={{ sm: "150px", md: "200px", lg: "auto" }}
+                              borderColor="transparent"
+                            >
+                              {data}
+                            </Td>
+                          );
+                        })}
+                        <Td>
+                          <IconButton
+                            colorScheme="blue"
+                            aria-label="Edit"
+                            icon={<FaEdit />}
+                            mr={2}
+                            onClick={() => handleEditClick(row.original)}
+                            isDisabled={!access.update} // Disable delete button if delete access is false
+                          />
+                          <IconButton
+                            colorScheme="red"
+                            aria-label="Delete"
+                            icon={<FaTrash />}
+                            onClick={() => handleDeleteClick(row.original)}
+                            isDisabled={!access.delete} // Disable delete button if delete access is false
+                          />
                         </Td>
-                      );
-                    })}
-                    <Td>
-                        <IconButton
-                          colorScheme="blue"
-                          aria-label="Edit"
-                          icon={<FaEdit />}
-                          mr={2}
-                          onClick={() => handleEditClick(row.original)}
-                         isDisabled={!access.update} // Disable delete button if delete access is false
-
-                        />
-                        <IconButton
-                          colorScheme="red"
-                          aria-label="Delete"
-                          icon={<FaTrash />}
-                          onClick={() => handleDeleteClick(row.original)}
-                         isDisabled={!access.delete} // Disable delete button if delete access is false
-
-                        />
-                    </Td>
-                  </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-          <Flex justifyContent="space-between" m={4} alignItems="center">
-            <ButtonGroup>
-              <IconButton
-                onClick={() => gotoPage(0)}
-                isDisabled={!canPreviousPage}
-                icon={<FaAngleDoubleLeft />}
-                aria-label="First Page"
-              />
-              <IconButton
-                onClick={() => previousPage()}
-                isDisabled={!canPreviousPage}
-                icon={<FaAngleLeft />}
-                aria-label="Previous Page"
-              />
-              <IconButton
-                onClick={() => nextPage()}
-                isDisabled={!canNextPage}
-                icon={<FaAngleRight />}
-                aria-label="Next Page"
-              />
-              <IconButton
-                onClick={() => gotoPage(pageOptions.length - 1)}
-                isDisabled={!canNextPage}
-                icon={<FaAngleDoubleRight />}
-                aria-label="Last Page"
-              />
-            </ButtonGroup>
-            <span>
-              Page{' '}
-              <strong>
-                {pageIndex + 1} of {pageOptions.length}
-              </strong>{' '}
-            </span>
-            <Flex alignItems="center">
-              <span>Go to page: </span>
-              <input
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={e => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  gotoPage(page);
-                }}
-                style={{ width: '50px', marginLeft: '5px' }}
-              />
-            </Flex>
-            <select
-              value={pageSize}
-              onChange={e => setPageSize(Number(e.target.value))}
-            >
-              {[5, 10, 20].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select>
-          </Flex>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+              <Flex justifyContent="space-between" m={4} alignItems="center">
+                <ButtonGroup>
+                  <IconButton
+                    onClick={() => gotoPage(0)}
+                    isDisabled={!canPreviousPage}
+                    icon={<FaAngleDoubleLeft />}
+                  />
+                  <IconButton
+                    onClick={() => previousPage()}
+                    isDisabled={!canPreviousPage}
+                    icon={<FaAngleLeft />}
+                  />
+                  <IconButton
+                    onClick={() => nextPage()}
+                    isDisabled={!canNextPage}
+                    icon={<FaAngleRight />}
+                  />
+                  <IconButton
+                    onClick={() => gotoPage(pageCount - 1)}
+                    isDisabled={!canNextPage}
+                    icon={<FaAngleDoubleRight />}
+                  />
+                </ButtonGroup>
+                <Text>
+                  Page {pageIndex + 1} of {pageOptions.length}
+                </Text>
+                <Flex alignItems="center">
+                  <Text mr={2}>Go to page:</Text>
+                  <input
+                    type="number"
+                    defaultValue={pageIndex + 1}
+                    onChange={(e) => {
+                      const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                      gotoPage(page);
+                    }}
+                    style={{ width: "50px" }}
+                  />
+                </Flex>
+                <select
+                  value={pageSize}
+                  onChange={(e) => {
+                    setPageSize(Number(e.target.value));
+                  }}
+                >
+                  {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                    <option key={pageSize} value={pageSize}>
+                      Show {pageSize}
+                    </option>
+                  ))}
+                </select>
+              </Flex>
+            </>
+          )}
         </>
       )}
     </>

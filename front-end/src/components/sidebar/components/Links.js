@@ -53,10 +53,31 @@ function Links({ routes }) {
 
       <Menu>
         <MenuButton as={Button} rightIcon={<MdKeyboardArrowDown />}>
-          Master
+          Master IT
         </MenuButton>
         <MenuList>
-          {renderCategoryLinks("master")}
+          {renderCategoryLinks("masterIT")}
+        </MenuList>
+      </Menu>
+
+            <Menu>
+        <MenuButton as={Button} rightIcon={<MdKeyboardArrowDown />}>
+          Master Pelayanan
+        </MenuButton>
+        <MenuList>
+          {renderCategoryLinks("masterPelayanan")}
+        </MenuList>
+      </Menu>
+
+
+
+
+            <Menu>
+        <MenuButton as={Button} rightIcon={<MdKeyboardArrowDown />}>
+          Master SDM
+        </MenuButton>
+        <MenuList>
+          {renderCategoryLinks("masterSDM")}
         </MenuList>
       </Menu>
 

@@ -1,0 +1,43 @@
+{
+    "packages": [
+        {
+            "name": "tsany/pagination-library",
+            "version": "v1.0.0",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ryzen500/tsany-pagination-library.git",
+                "reference": "2c63a2ddd7307fc1a9a12d43579c6955efab87d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ryzen500/tsany-pagination-library/zipball/2c63a2ddd7307fc1a9a12d43579c6955efab87d9",
+                "reference": "2c63a2ddd7307fc1a9a12d43579c6955efab87d9",
+                "shasum": ""
+            },
+            "time": "2024-10-30T09:59:15+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "PaginationLibrary\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "ryzen500",
+                    "email": "ahmadtsani145@gmail.com"
+                }
+            ],
+            "description": "Simple Pagination library for PHP and php framework",
+            "support": {
+                "issues": "https://github.com/ryzen500/tsany-pagination-library/issues",
+                "source": "https://github.com/ryzen500/tsany-pagination-library/tree/v1.0.0"
+            },
+            "install-path": "../tsany/pagination-library"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

@@ -1,0 +1,17 @@
+{
+    "name": "tsany/pagination-library",
+    "description": "Simple Pagination library for PHP and php framework",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "PaginationLibrary\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ryzen500",
+            "email": "ahmadtsani145@gmail.com"
+        }
+    ],
+    "require": {}
+}
