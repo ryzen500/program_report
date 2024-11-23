@@ -95,3 +95,18 @@ CREATE TABLE sdm_laporan_detail (
         FOREIGN KEY (sdm_laporan_id) REFERENCES sdm_laporan(sdm_laporan_id)
         ON DELETE CASCADE
 );
+
+
+CREATE TABLE pelanggan_karakteristik_detail (
+    pelanggan_karakteristik_detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    pelanggan_karakteristik_id INT,
+    nama_detail VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    tanggal_transaksi DATETIME NOT NULL,
+    jumlah DOUBLE NOT NULL,
+    keterangan TEXT,
+    kode_rumahsakit INT,
+    CONSTRAINT fk_pelanggan_karakteristik
+        FOREIGN KEY (pelanggan_karakteristik_id) REFERENCES pelanggan_karakteristik(pelanggan_karakteristik_id)
+        ON DELETE CASCADE
+);

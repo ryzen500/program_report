@@ -1,6 +1,9 @@
 <?php
 
 require_once 'Transaksi/TransaksiPelayananSDMController.php';
+require_once 'Transaksi/TransaksiIKPController.php';
+require_once 'Transaksi/TransaksiKarakteristikPelangganController.php';
+
 require_once 'config.php'; // Assuming db_connection.php contains the DB connection setup
 
 
@@ -62,7 +65,7 @@ function routeRequest() {
             createHakAkses($input);
         }elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'hak_akses' &&  !empty($uri_parts[6]) ) {
             $id = $uri_parts[6];
-            readHakAksesDetail($id,$input);
+            readHakAksesDetail($id);
         }elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'hak_akses') {
             readHakAkses();
         }
@@ -324,6 +327,133 @@ function routeRequest() {
 
         }
 
+
+        /**
+         * Router Pengelompokan berdasarkan dari Controller TransaksiIKPController
+         * */
+
+        if($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'laporan_ikp'){
+            $transaksiController = new TransaksiIKP($conn);
+            $transaksiController->readTransaksiPelayananIKP();
+        }
+          elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'laporan_ikp_detail' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiIKP($conn);
+            $transaksiController->readTransaksiPelayananIKPDetail($id);
+
+        }
+
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'create_laporan_ikp') {
+                    $input = json_decode(file_get_contents('php://input'), true);
+                    // $kode_rumahsakit = $input['kode_rumahsakit'];
+
+                if ($input) {
+                    $transaksiController = new TransaksiIKP($conn);
+                    $transaksiController->createLaporanIKP($input);  // Panggil fungsi yang sesuai
+                } else {
+                    echo "Kode Rumah Sakit tidak ada.";
+                }
+        }
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'update_data_ikp' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiIKP($conn);
+            $transaksiController->updateIKPLaporanAndDetail($id,$input);
+
+        }
+
+           elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'noformulirikp') {
+                    $input = json_decode(file_get_contents('php://input'), true);
+                    $kode_rumahsakit = $input['kode_rumahsakit'];
+
+                if ($kode_rumahsakit) {
+                    $transaksiController = new TransaksiIKP($conn);
+                    $transaksiController->getNoFormulirIKP($kode_rumahsakit);  // Panggil fungsi yang sesuai
+                } else {
+                    echo "Kode Rumah Sakit tidak ada.";
+                }
+        }
+
+
+          elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'delete_data_ikp' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiIKP($conn);
+            $transaksiController->softDeleteTransaksi($id);
+
+        }
+
+
+        /**
+         * Router Pengelompokan berdasarkan dari Controller TransaksiKarakteristikPelanggan
+         * */
+
+         if($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'laporan_karakteristikpelanggan'){
+            $transaksiController = new TransaksiKarakteristikPelanggan($conn);
+            $transaksiController->readTransaksiLaporanPelanggan();
+        }
+          elseif ($request_method === 'GET' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'laporan_karakteristikpelanggan_detail' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiKarakteristikPelanggan($conn);
+            $transaksiController->readTransaksiLaporanPelangganDetail($id);
+
+        }
+
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'create_laporan_ikp') {
+                    $input = json_decode(file_get_contents('php://input'), true);
+                    // $kode_rumahsakit = $input['kode_rumahsakit'];
+
+                if ($input) {
+                    $transaksiController = new TransaksiKarakteristikPelanggan($conn);
+                    $transaksiController->createLaporanPelangganKarakteristik($input);  // Panggil fungsi yang sesuai
+                } else {
+                    echo "Kode Rumah Sakit tidak ada.";
+                }
+        }
+
+        elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'update_data_ikp' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiKarakteristikPelanggan($conn);
+            $transaksiController->updateLaporanPelangganAndDetail($id,$input);
+
+        }
+
+           elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'noformulirikp') {
+                    $input = json_decode(file_get_contents('php://input'), true);
+                    $kode_rumahsakit = $input['kode_rumahsakit'];
+
+                if ($kode_rumahsakit) {
+                    $transaksiController = new TransaksiKarakteristikPelanggan($conn);
+                    $transaksiController->getNoFormulirPelanggan($kode_rumahsakit);  // Panggil fungsi yang sesuai
+                } else {
+                    echo "Kode Rumah Sakit tidak ada.";
+                }
+        }
+
+
+          elseif ($request_method === 'POST' && isset($uri_parts[4]) && $uri_parts[4] === 'api' && $uri_parts[5] === 'delete_data_ikp' && !empty($uri_parts[6])) {
+            $id = $uri_parts[6];
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            // var_dump($id);die;
+            $transaksiController = new TransaksiIKP($conn);
+            $transaksiController->softDeleteTransaksi($id);
+
+        }
 
 
 
